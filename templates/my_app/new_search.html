@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>new search</title>
+</head>
+<body>
+
+{% block content %}
+
+
+<h2 style="text-align:center"> {{ search | title}} </h2>
+
+ {% for post in final_posting %}
+
+  <div class="col s12 m7">
+    <h4 class="header">{{post.0}}</h4>
+    <div class="card horizontal">
+      <div class="card-image">
+        <a href="{{post.1}}">
+          <img src="{{post.3}}">
+        </a>
+
+      </div>
+      <div class="card-stacked">
+        <div class="card-content">
+          <p>location - {{post.2}}</p>
+        </div>
+        <div class="card-action">
+          <a href="{{post.1}}">{{post.1}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+ {% endfor %}
+
+{% endblock content %}
+
+</body>
+</html>
+
