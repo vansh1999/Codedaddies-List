@@ -6,7 +6,7 @@ from . import models
 # Create your views here.
 
 
-BASE_CRAGSLIST_URL = 'https://delhi.craigslist.org/search/?query={}'
+BASE_CRAGSLIST_URL = 'https://losangeles.craigslist.org/search/?query={}'
 BASE_IMAGE_URL = 'https://images.craigslist.org/{}_300x300.jpg'
 
 
