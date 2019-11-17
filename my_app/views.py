@@ -6,8 +6,8 @@ from . import models
 # Create your views here.
 
 
-BASE_CRAGSLIST_URL = 'https://losangeles.craigslist.org/search/?query={}'
-BASE_IMAGE_URL = 'https://images.craigslist.org/{}_300x300.jpg'
+BASE_CRAGSLIST_URL = 'https://github.com/search?q={}&type=Users'
+# BASE_IMAGE_URL = 'https://images.craigslist.org/{}_300x300.jpg'
 
 
 def home(request):
@@ -22,34 +22,36 @@ def new_search(request):
     response = requests.get(final_url)
     data = response.text
 
-
+    print(final_url)
     soup = BeautifulSoup(data , features='html.parser')
 
-    post_listings = soup.find_all('li', {'class': 'result-row'})
-    # print(post_listings)
+    users = soup.find("div", {"id": "user_search_results"})
+    list_get = users.find("div", {"class": "user-list"})
 
+    user_list = list_get.find_all(class_="user-list-item")
+
+    # user_name = [name.find(class_="f4").get_text() for name in user_list]
+    # user_title = [title.find(class_="f5").get_text() for title in user_list]
     final_posting = []
 
-    for post in post_listings:
+    for post in user_list:
 
-        post_title = post.find(class_='result-title').text
-        post_url = post.find('a').get('href')
-        post_loc = post.find('span' , class_ = 'result-meta').text
-        post_location = post_loc.split('\n')[1]
-
-        if post.find(class_='result-image').get('data-ids'):
-            post_image_id = post.find(class_='result-image').get('data-ids').split(',')[0].split(':')[1]
-            post_image_url = BASE_IMAGE_URL.format(post_image_id)
-            print(post_image_url)
+        # user_name = post.find(class_ = "f4").get_text()
+        # user_title = post.find(class_ = "f5").get_text()
+        # # print(user_name)
+        if post.find(class_ = "f4"):
+            user_name = post.find(class_="f4").get_text()
         else:
-            post_image_url = 'https://craigslist.org/images/peace.jpg'
+            user_name = search
+
+        if post.find(class_ = "f5"):
+            user_title = post.find(class_="f5").get_text()
+        else:
+            user_title = search
 
 
 
-        final_posting.append((post_title, post_url , post_location , post_image_url))
-
-
-
+        final_posting.append((user_name , user_title))
 
 
 
@@ -57,9 +59,10 @@ def new_search(request):
 
         'search' : search ,
         'final_posting' : final_posting,
+        'final_url' : final_url,
+
 
     }
 
     return render(request , 'my_app/new_search.html' , stuff_for_frontend)
-
 
